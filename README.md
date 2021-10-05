@@ -8,4 +8,4 @@ aeS aims to be a new web/mobile platform seeking to provide daily interaction/le
 ## Vlogs
 ### Project Vlog Intro Link
 
-[![Project Vlog Intro Link - Click to watch](https://www.youtube.com/watch?v=f12HEz066Ss)](i.ytimg.com/vi/f12HEz066Ss/hqdefault.jpg)
+[![Project Vlog Intro Link - Click to watch](i.ytimg.com/vi/f12HEz066Ss/hqdefault.jpg)](https://youtu.be/f12HEz066Ss)
