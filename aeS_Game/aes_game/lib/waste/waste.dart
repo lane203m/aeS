@@ -1,3 +1,4 @@
+import 'package:aes_game/models/waste_data.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/extensions.dart';
@@ -11,39 +12,22 @@ import 'dart:math' as math;
 
 
 class WasteItem extends SpriteComponent with Tappable {
-  late Sprite wasteSprite;
-  bool isClicked = false;
-  SpriteSheet? spriteSheet;
-  Timer timer = Timer(2);
-  int scoreToGive = 1;
-  double angleToggle = 0.05 * (-3 + math.Random().nextInt(6) <= 0 ? (-3 + math.Random().nextInt(2)) as double : (1 + math.Random().nextInt(2)) as double);
-  Paint currentPaint;
+  late WasteData wasteData;
+  SpriteSheet spriteSheet;
   bool canClick = true;
 
-  static Paint _randomPaint() {
-    final rng = math.Random();
-    final color = Color.fromRGBO(
-      rng.nextInt(256),
-      rng.nextInt(256),
-      rng.nextInt(256),
-      0.9,
-    );
-    return PaletteEntry(color).paint();
-  }
-
-  WasteItem({required SpriteSheet? spriteSheet, required Vector2 position})
-      : currentPaint = _randomPaint(),
-        spriteSheet = spriteSheet,
-        super(
+  WasteItem(this.spriteSheet,  bool isClicked, bool canClick, int spriteNumber, int wasteId, {required Vector2 position})
+      : super(
           position: position,
           size: Vector2.all(48 + (64-48) * math.Random().nextDouble()),
         ){
-    initialize();
+    initialize(spriteNumber, isClicked, canClick, wasteId);
   }
 
-  void initialize() async{
-    wasteSprite = spriteSheet!.getSprite(0, math.Random().nextInt(16));
-    sprite = wasteSprite;
+  void initialize(int spriteNumber, bool isClicked, bool canClick, int wasteId) async{
+    var wasteSprite = spriteSheet.getSprite(0, math.Random().nextInt(16));
+    wasteData = WasteData(isClicked, canClick, wasteId, wasteSpriteValue: wasteSprite);
+    sprite = wasteData.wasteSprite;
   }
 
   @override
@@ -53,14 +37,8 @@ class WasteItem extends SpriteComponent with Tappable {
 
   @override
   bool onTapDown(_) {
-    if(!isClicked && canClick){
-      makeTransparent();
-      add(ScaleEffect(scale: Vector2.all(1.6), speed: 2.0, curve: Curves.linear));
-      add(RotateEffect(angle: -2/angleToggle, speed: 2, isInfinite: true, isAlternating: true));  
-      isClicked = true;
-      //OpacityEffect opacityEffect = OpacityEffect(duration: 2, opacity: 1, removeOnFinish: true);
-      add(OpacityEffect(duration: 0.5, opacity: 1, isAlternating: true));
-      timer.start();
+    if(!wasteData.isClicked && canClick){
+      triggerDespawn();
     }
     return false;
     
@@ -75,23 +53,32 @@ class WasteItem extends SpriteComponent with Tappable {
   Future<void> onLoad() async {
     super.onLoad();
     anchor = Anchor.center;
-    add(RotateEffect(angle: angleToggle, speed: 0.02 * 1 *math.Random().nextDouble(), isAlternating: true, isInfinite: true));
+    add(RotateEffect(angle: wasteData.angleToggle, speed: 0.02 * 1 *math.Random().nextDouble(), isAlternating: true, isInfinite: true));
   }
 
   @override
   void update(double dt) {
     // TODO: implement update
     super.update(dt);
+    if(wasteData.isClicked){
+      if(wasteData.timer.isRunning()){
 
-    if(isClicked){
-      if(timer.isRunning()){
-
-        timer.update(dt);
+        wasteData.timer.update(dt);
       }
-      else if(isClicked && !timer.isRunning()){
+      else if(wasteData.isClicked && !wasteData.timer.isRunning()){
         removeFromParent();
-        timer.stop();
+        wasteData.timer.stop();
         }
     }   
+  }
+
+  void triggerDespawn() {
+      makeTransparent();
+      add(ScaleEffect(scale: Vector2.all(1.6), speed: 2.0, curve: Curves.linear));
+      add(RotateEffect(angle: -2/wasteData.angleToggle, speed: 2, isInfinite: true, isAlternating: true));  
+      wasteData.isClicked = true;
+      //OpacityEffect opacityEffect = OpacityEffect(duration: 2, opacity: 1, removeOnFinish: true);
+      add(OpacityEffect(duration: 0.5, opacity: 1, isAlternating: true));
+      wasteData.timer.start();
   }
 }

@@ -10,6 +10,8 @@ import 'package:flame/input.dart';
 import 'package:flame/palette.dart';
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
+
 class AesGame extends FlameGame with HasTappableComponents {
   late Image image;
   int score = 0;
@@ -45,6 +47,7 @@ class AesGame extends FlameGame with HasTappableComponents {
     image = await Flame.images.load('../../../sprites/recycle_item_sprites.png');
     wasteController = WasteController(image: image);
     wasteController.generateWasteItems();
+    debugPrint('${wasteController.wasteItems.length}');
     await add(SeaParallaxComponent());
     playerController = PlayerController(size: size);
     add(wasteController);
@@ -57,11 +60,11 @@ class AesGame extends FlameGame with HasTappableComponents {
     super.update(dt);
     playerController.size = size;
 
-    for (int i = 0 ; i<1000; i++){
-      if(wasteController.wasteItems[i].isClicked){
-        playerController.score += wasteController.wasteItems[i].scoreToGive*25;
-        playerController.quota -= wasteController.wasteItems[i].scoreToGive;
-        wasteController.wasteItems[i].scoreToGive = 0;
+    for (int i = 0 ; i<wasteController.wasteItems.length; i++){
+      if(wasteController.wasteItems[i].wasteData.isClicked){
+        playerController.score += wasteController.wasteItems[i].wasteData.scoreToGive*25;
+        playerController.quota -= wasteController.wasteItems[i].wasteData.scoreToGive;
+        wasteController.wasteItems[i].wasteData.scoreToGive = 0;
       }
       if(playerController.quota == 0){
         wasteController.wasteItems[i].canClick = false;
