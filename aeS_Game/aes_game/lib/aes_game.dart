@@ -9,9 +9,7 @@ import 'package:flame/image_composition.dart';
 import 'package:flame/input.dart';
 import 'package:flame/palette.dart';
 import 'dart:ui';
-
 import 'package:flutter/foundation.dart';
-
 class AesGame extends FlameGame with HasTappableComponents {
   late Image image;
   int score = 0;
@@ -49,7 +47,7 @@ class AesGame extends FlameGame with HasTappableComponents {
     wasteController.generateWasteItems();
     debugPrint('${wasteController.wasteItems.length}');
     await add(SeaParallaxComponent());
-    playerController = PlayerController(size: size);
+    playerController = PlayerController(size);
     add(wasteController);
     add(playerController);
   }
@@ -61,14 +59,36 @@ class AesGame extends FlameGame with HasTappableComponents {
     playerController.size = size;
 
     for (int i = 0 ; i<wasteController.wasteItems.length; i++){
-      if(wasteController.wasteItems[i].wasteData.isClicked){
-        playerController.score += wasteController.wasteItems[i].wasteData.scoreToGive*25;
-        playerController.quota -= wasteController.wasteItems[i].wasteData.scoreToGive;
-        wasteController.wasteItems[i].wasteData.scoreToGive = 0;
-      }
-      if(playerController.quota == 0){
+      if(playerController.playerData.quota == 0 && DateTime.now().isBefore(playerController.playerData.dateTime.add(const Duration(seconds: 10)))){
         wasteController.wasteItems[i].canClick = false;
       }
+      else if(wasteController.wasteItems[i].wasteData.isClicked && wasteController.wasteItems[i].wasteData.scoreToGive > 0 && playerController.playerData.quota == 0 && DateTime.now().isAfter(playerController.playerData.dateTime.add(const Duration(seconds: 10)))){
+        playerController.playerData.score += wasteController.wasteItems[i].wasteData.scoreToGive*25;
+        playerController.playerData.quota -= wasteController.wasteItems[i].wasteData.scoreToGive;
+        wasteController.wasteItems[i].wasteData.scoreToGive = 0;
+        playerController.postPlayerScore();
+
+        playerController.updatePlayerState();
+      }
+      else if(wasteController.wasteItems[i].wasteData.isClicked && wasteController.wasteItems[i].wasteData.scoreToGive > 0){
+        playerController.playerData.score += wasteController.wasteItems[i].wasteData.scoreToGive*25;
+        playerController.playerData.quota -= wasteController.wasteItems[i].wasteData.scoreToGive;
+        wasteController.wasteItems[i].wasteData.scoreToGive = 0;
+        playerController.postPlayerScore();
+        playerController.postPlayerActions();
+        playerController.postActionTime();
+        playerController.updatePlayerState();
+
+      }
+
+
+
+    }
+
+    if(playerController.playerData.quota == 0 && !DateTime.now().isBefore(playerController.playerData.dateTime.add(const Duration(seconds: 10)))){
+      wasteController.wasteItems.forEach((element) {element.canClick = true;});
+      playerController.postResetPlayerActions();
+      playerController.postActionTime();
     }
   }
 }

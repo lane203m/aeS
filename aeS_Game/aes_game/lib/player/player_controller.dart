@@ -1,33 +1,31 @@
+import 'package:aes_game/models/player_data.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/extensions.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 class PlayerController extends Component {
-  late int score;
-  late int quota;
+  late PlayerData playerData;
   Vector2 size;
   late TextComponent scoreOverlay;
   late TextComponent quotaOverlay;
-  late DateTime dateTime;
-
-  PlayerController({required Vector2 size}):size = size
+  //DateFormat dateFormat = 
+  PlayerController(this.size)
   {
     initialize();
   }
 
   initialize() async {
-    score = 0;
-    quota = 10;
-    dateTime = DateTime.now();
+    playerData = getPlayerData();
   }
 
-  void getPlayerState(){
+  /*void getPlayerState(){
     score = score;
     quota = quota;
     dateTime = dateTime;
-  }
+  }*/
 
   @override
   void render(Canvas canvas) {
@@ -89,9 +87,59 @@ class PlayerController extends Component {
   void update(double dt) {
     // TODO: implement update
     super.update(dt);
-    quotaOverlay.text = 'Actions: $quota';
-    scoreOverlay.text = 'Score: $score';
+      scoreOverlay.text = 'Score: ${playerData.score}';
+    if(playerData.quota > 0){
+      quotaOverlay.text = 'Actions: ${playerData.quota}';
+      quotaOverlay.textRenderer = TextPaint(
+          config: const TextPaintConfig(
+            color: Colors.green,
+            fontSize: 12,
+            fontFamily: 'BungeeInline',
+          ),
+      ); 
+    }else{
+      initializeDateFormatting('en_US', null);
+      quotaOverlay.text = '${(playerData.dateTime.add(const Duration(seconds: 10))).difference(DateTime.now())}';/*DateFormat.Hms(DateTime.now().toString())}';*/
+      quotaOverlay.textRenderer = TextPaint(
+          config: const TextPaintConfig(
+            color: Colors.orange,
+            fontSize: 12,
+            fontFamily: 'BungeeInline',
+          ),
+      ); 
+    }
     scoreOverlay.position = Vector2(size.x/2, 20);
     quotaOverlay.position = Vector2(size.x-60, 20);
   }
+
+  void updatePlayerState(){
+    playerData = playerData;//getPlayerData()
+  }
+
+  PlayerData getPlayerData() {
+    PlayerData playerData; 
+    
+    playerData = PlayerData(0, 10, DateTime.now(), "1.0");
+
+    return playerData;
+  }
+
+  void postPlayerScore(){
+    //currentScore +=1
+  }
+
+  void postResetPlayerActions(){
+    playerData.quota = 10;
+    
+    playerData.dateTime = DateTime.now();
+  }
+
+  void postActionTime(){
+    playerData.dateTime = DateTime.now();
+  }
+
+  void postPlayerActions(){
+    //actions =- 1
+  }
+
 }
