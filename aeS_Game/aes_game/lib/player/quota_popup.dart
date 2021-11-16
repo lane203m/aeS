@@ -37,7 +37,10 @@ class QuotaPopup extends StatelessWidget {
                   style: ButtonStyle(
                     alignment: Alignment.center,
                     backgroundColor: MaterialStateColor.resolveWith((states) => const Color(0x00FFE69C)),
-                    tapTargetSize: MaterialTapTargetSize.padded
+                    tapTargetSize: MaterialTapTargetSize.padded,
+                    overlayColor: MaterialStateColor.resolveWith((states) => const Color(0x00FFE69C)),
+                    shadowColor: MaterialStateColor.resolveWith((states) => const Color(0x00FFE69C)),
+                    foregroundColor: MaterialStateColor.resolveWith((states) => const Color(0x00FFE69C)),
                   ),
                   onPressed: () {
                     gameRef.resumeEngine();
