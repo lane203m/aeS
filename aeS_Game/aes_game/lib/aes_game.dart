@@ -14,9 +14,10 @@ import 'package:flame/palette.dart';
 import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import './trivia/trivia_popup.dart';
-class AesGame extends FlameGame with HasTappableComponents {
+class AesGame extends FlameGame with HasTappableComponents, FPSCounter {
   late Image image;
   int score = 0;
+  int clickingAction = 0;
   AesGame(){
     initialize();
   }
@@ -41,6 +42,9 @@ class AesGame extends FlameGame with HasTappableComponents {
     c.drawRect(medRect, darkBlue);
     c.drawRect(smallRect, lightBlue);
 
+    final fpsCount = fps(120);
+
+    debugPrint(fpsCount.toString());
     super.render(c);
   }
 
@@ -64,39 +68,56 @@ class AesGame extends FlameGame with HasTappableComponents {
     super.update(dt);
     playerController.size = size;
 
-    for (int i = 0 ; i<wasteController.wasteItems.length; i++){
-      if(playerController.playerData.quota == 0 && DateTime.now().isBefore(playerController.playerData.dateTime.add(const Duration(seconds: 10)))){
-        wasteController.wasteItems[i].canClick = false;
-        //overlays.add(QuotaPopup.id);
-        //for (var element in wasteController.wasteItems) { element.canClick = false;}
-      }
-      else if(wasteController.wasteItems[i].wasteData.isClicked && wasteController.wasteItems[i].wasteData.scoreToGive > 0 && playerController.playerData.quota == 0 && DateTime.now().isAfter(playerController.playerData.dateTime.add(const Duration(seconds: 10)))){
-        playerController.playerData.score += wasteController.wasteItems[i].wasteData.scoreToGive*25;
-        playerController.playerData.quota -= wasteController.wasteItems[i].wasteData.scoreToGive;
-        wasteController.wasteItems[i].wasteData.scoreToGive = 0;
-        playerController.postPlayerScore();
+    if(wasteController.wasteItems.any((element) => element.canClick == true) && playerController.playerData.quota == 0 && DateTime.now().isBefore(playerController.playerData.dateTime.add(const Duration(seconds: 10)))){
+        for (var element in wasteController.wasteItems) {element.canClick = false;}
+    }
+    else{
+      for (int i = 0 ; i<wasteController.wasteItems.length; i++){
+        if(playerController.playerData.quota == 0 && DateTime.now().isBefore(playerController.playerData.dateTime.add(const Duration(seconds: 10)))){
+          wasteController.wasteItems[i].canClick = false;
+          //overlays.add(QuotaPopup.id);
+          //for (var element in wasteController.wasteItems) { element.canClick = false;}
+        }
+        else if(wasteController.wasteItems[i].wasteData.isClicked && wasteController.wasteItems[i].wasteData.scoreToGive > 0 && playerController.playerData.quota == 0 && DateTime.now().isAfter(playerController.playerData.dateTime.add(const Duration(seconds: 10)))){
+          playerController.playerData.score += wasteController.wasteItems[i].wasteData.scoreToGive*25;
+          playerController.playerData.quota -= wasteController.wasteItems[i].wasteData.scoreToGive;
+          wasteController.wasteItems[i].wasteData.scoreToGive = 0;
+          playerController.postPlayerScore();
 
-        playerController.updatePlayerState();
-        overlays.add(TriviaPopup.id);
-        for (var element in wasteController.wasteItems) { element.canClick = false;}
-      }
-      else if(wasteController.wasteItems[i].wasteData.isClicked && wasteController.wasteItems[i].wasteData.scoreToGive > 0){
-        playerController.playerData.score += wasteController.wasteItems[i].wasteData.scoreToGive*25;
-        playerController.playerData.quota -= wasteController.wasteItems[i].wasteData.scoreToGive;
-        wasteController.wasteItems[i].wasteData.scoreToGive = 0;
-        playerController.postPlayerScore();
-        playerController.postPlayerActions();
-        playerController.postActionTime();
-        playerController.updatePlayerState();
-        overlays.add(TriviaPopup.id);
-        for (var element in wasteController.wasteItems) { element.canClick = false;}
+          playerController.updatePlayerState();
+          overlays.add(TriviaPopup.id);
+          for (var element in wasteController.wasteItems) { element.canClick = false;}
+        }
+        else if(wasteController.wasteItems[i].wasteData.isClicked && wasteController.wasteItems[i].wasteData.scoreToGive > 0){
+          playerController.playerData.score += wasteController.wasteItems[i].wasteData.scoreToGive*25;
+          playerController.playerData.quota -= wasteController.wasteItems[i].wasteData.scoreToGive;
+          wasteController.wasteItems[i].wasteData.scoreToGive = 0;
+          playerController.postPlayerScore();
+          playerController.postPlayerActions();
+          playerController.postActionTime();
+          playerController.updatePlayerState();
+          overlays.add(TriviaPopup.id);
+          for (var element in wasteController.wasteItems) { element.canClick = false;}
+        }
       }
     }
-
     if(playerController.playerData.quota == 0 && !DateTime.now().isBefore(playerController.playerData.dateTime.add(const Duration(seconds: 10)))){
       for (var element in wasteController.wasteItems) {element.canClick = true;}
       playerController.postResetPlayerActions();
       playerController.postActionTime();
+    }
+  }
+
+  @override
+  void onTapDown(int pointerId, TapDownInfo info) {
+    super.onTapDown(pointerId, info);
+    if(clickingAction == 0 && playerController.playerData.quota == 0 && DateTime.now().isBefore(playerController.playerData.dateTime.add(const Duration(seconds: 10)))){
+        overlays.add(QuotaPopup.id);
+        for (var element in wasteController.wasteItems) { element.canClick = false;}
+        clickingAction == 1;
+    }
+    else{
+      clickingAction == 0;
     }
   }
 
