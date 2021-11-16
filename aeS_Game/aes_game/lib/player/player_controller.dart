@@ -4,7 +4,6 @@ import 'package:flame/effects.dart';
 import 'package:flame/extensions.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 class PlayerController extends Component {
   late PlayerData playerData;
@@ -85,6 +84,7 @@ class PlayerController extends Component {
   }
   @override
   void update(double dt) {
+    // ignore: todo
     // TODO: implement update
     super.update(dt);
       scoreOverlay.text = 'Score: ${playerData.score}';

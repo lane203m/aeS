@@ -1,0 +1,16 @@
+{
+    "TriviaList" : [
+        {"String":"'Dead Zones' are areas of water that lack sufficient oxygen to support marine life."},
+        {"String":"There were 700 dead zones in 2019, and 400 in 2008."},
+        {"String":"Only 1.2% of national budgets are allocated for ocean science."},
+        {"String":"Over three billion people's livelihoods depend on oceans."},
+        {"String":"Oceans cover more than two-thirds of the earth’s surface and contain 97% of the planet’s water."},
+        {"String":"These facts are stand-ins."},
+        {"String":"Water is wet."},
+        {"String":"Water is not wet."},
+        {"String":"Ocean facts don't care about your feelings."},
+        {"String":"There is a lot of water in the ocean"},
+        {"String":"The ocean is deep and very down to earth"},
+        {"String":"Don't put plastic in the ocean"}
+    ]
+}

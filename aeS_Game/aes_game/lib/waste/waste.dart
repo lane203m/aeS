@@ -5,10 +5,9 @@ import 'package:flame/extensions.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/sprite.dart';
-import 'package:flame/palette.dart';
 import 'package:flame/image_composition.dart';
 import 'dart:math' as math;
-
+import 'package:flame/input.dart';
 
 
 class WasteItem extends SpriteComponent with Tappable {
@@ -31,11 +30,13 @@ class WasteItem extends SpriteComponent with Tappable {
   }
 
   @override
+  // ignore: avoid_renaming_method_parameters
   bool onTapUp(_) {
     return false;
   }
 
   @override
+  // ignore: avoid_renaming_method_parameters
   bool onTapDown(_) {
     if(!wasteData.isClicked && canClick){
       triggerDespawn();
@@ -43,6 +44,7 @@ class WasteItem extends SpriteComponent with Tappable {
     return false;
     
   }
+
 
   @override
   bool onTapCancel() {
@@ -58,6 +60,7 @@ class WasteItem extends SpriteComponent with Tappable {
 
   @override
   void update(double dt) {
+    // ignore: todo
     // TODO: implement update
     super.update(dt);
     if(wasteData.isClicked){

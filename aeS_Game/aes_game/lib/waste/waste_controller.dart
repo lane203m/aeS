@@ -15,6 +15,7 @@ class WasteController extends Component {
   late SpriteSheet spriteSheet;
 
   WasteController({required Image image})
+    // ignore: prefer_initializing_formals
     : image = image
   {
     initialize();
@@ -29,13 +30,13 @@ class WasteController extends Component {
 
   void generateWasteItems() async{
 
-    wasteItems = await getWasteItems();
+    wasteItems = getWasteItems();
   }
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    await wasteItems[0].sprite;
+    wasteItems[0].sprite;
     for(int i = 0; i<wasteItems.length; i++){
       debugPrint('${wasteItems[i].wasteData.wasteId}');
       add(wasteItems[i]);
@@ -47,16 +48,16 @@ class WasteController extends Component {
   
   @override
   void update(double dt) {
+    // ignore: todo
     // TODO: implement update
     super.update(dt);
 
     List<int> removedItems = getRemovedItems();
-    wasteItems.forEach((wasteElement) {
+    for (var wasteElement in wasteItems) {
       if(removedItems.contains(wasteElement.wasteData.wasteId)){
         wasteElement.triggerDespawn();
       }
     }
-    );
 
 
   }

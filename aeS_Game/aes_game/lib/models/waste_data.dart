@@ -1,5 +1,4 @@
 import 'package:flame/components.dart';
-import 'package:flutter/painting.dart';
 import 'dart:math' as math;
 
 class WasteData{
