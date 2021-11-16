@@ -8,6 +8,7 @@ void main() {
 
   runApp(
     GameWidget(
+      mouseCursor: SystemMouseCursors.grab,
       game: aesGame,
       overlayBuilderMap: {TriviaPopup.id: (BuildContext context, AesGame gameRef) =>
                 TriviaPopup(const Key(TriviaPopup.id),
