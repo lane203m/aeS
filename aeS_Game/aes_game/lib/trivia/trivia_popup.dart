@@ -41,16 +41,36 @@ class TriviaPopup extends StatelessWidget {
               } else {
                 // data loaded:
                 final jsonData = snapshot.data;
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                return Stack(
+                    alignment: Alignment.center,
                     children: [
-                      SizedBox(
-                        width: 500,
+                      Container(
+                        width: 400,
                         height: 200,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF70ffe7),
+                          boxShadow: [  BoxShadow(
+                              color: Colors.black.withOpacity(0.5),
+                              spreadRadius: 10,
+                              blurRadius: 7,
+                              offset: const Offset(0, 3), // changes position of shadow
+                            ),
+                          ],
+                          borderRadius: BorderRadius.circular(10)
+                        ),
+                      ),
+                      SizedBox(
+                        width: 1000,
+                        height:500,
                         child: ElevatedButton(
                           style: ButtonStyle(
-                            backgroundColor: MaterialStateColor.resolveWith((states) => const Color(0xFFFFE69C))
+                            alignment: Alignment.center,
+                            backgroundColor: MaterialStateColor.resolveWith((states) => const Color(0x00FFE69C)),
+                            tapTargetSize: MaterialTapTargetSize.padded,
+                            overlayColor: MaterialStateColor.resolveWith((states) => const Color(0x00FFE69C)),
+                            shadowColor: MaterialStateColor.resolveWith((states) => const Color(0x00FFE69C)),
+                            foregroundColor: MaterialStateColor.resolveWith((states) => const Color(0x00FFE69C)),
                           ),
                           onPressed: () {
                             gameRef.resumeEngine();
@@ -58,7 +78,10 @@ class TriviaPopup extends StatelessWidget {
                             gameRef.overlays.remove(TriviaPopup.id);
                             
                           },
-                          child: Column(
+                          child: SizedBox(
+                            width: 400,
+                            height: 200,
+                            child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                                 /*Card(
@@ -70,43 +93,48 @@ class TriviaPopup extends StatelessWidget {
                               ),*/
                               const Padding(
                                 padding: EdgeInsets.only(bottom: 25),
-                                child: Text(
-                                  'Did you know?',
-                                  style: TextStyle(
-                                    fontSize: 25.0,
-                                    color: Colors.black,
-                                    shadows: [
-                                      Shadow(
-                                        blurRadius: 20.0,
-                                        color: Colors.white,
-                                        offset: Offset(0, 0),
-                                      )
-                                    ],
+                                  child: Text(
+                                    'Did you know?',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 25.0,
+                                      color: Colors.black,
+                                      shadows: [
+                                        Shadow(
+                                          blurRadius: 20.0,
+                                          color: Colors.white,
+                                          offset: Offset(0, 0),
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                ),
+                                
                               ),
                               Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 5.0),
-                                child: Text(
-                                  jsonData?[random.nextInt(jsonData.length-1)]["String"],
-                                  style: const TextStyle(
-                                    fontSize: 14.0,
-                                    color: Colors.black,
-                                    shadows: [
-                                      Shadow(
-                                        blurRadius: 20.0,
-                                        color: Colors.white,
-                                        offset: Offset(0, 0),
-                                      )
-                                    ],
+                                  padding: const EdgeInsets.symmetric(vertical: 5.0),
+                                  child: Text(
+                                    jsonData?[random.nextInt(jsonData.length-1)]["String"],
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                      fontSize: 14.0,
+                                      color: Colors.black,
+                                      shadows: [
+                                        Shadow(
+                                          blurRadius: 20.0,
+                                          color: Colors.white,
+                                          offset: Offset(0, 0),
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
+                            
                             ])
                         ),
                       ),
-                    ]
-                ));
+                    )
+                  ]
+                );
               }
             }
           )

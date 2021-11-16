@@ -1,5 +1,8 @@
+import 'dart:html';
+
 import 'package:aes_game/parallax_component.dart';
 import 'package:aes_game/player/player_controller.dart';
+import 'package:aes_game/player/quota_popup.dart';
 import 'package:aes_game/waste/waste_controller.dart';
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
@@ -64,6 +67,8 @@ class AesGame extends FlameGame with HasTappableComponents {
     for (int i = 0 ; i<wasteController.wasteItems.length; i++){
       if(playerController.playerData.quota == 0 && DateTime.now().isBefore(playerController.playerData.dateTime.add(const Duration(seconds: 10)))){
         wasteController.wasteItems[i].canClick = false;
+        //overlays.add(QuotaPopup.id);
+        //for (var element in wasteController.wasteItems) { element.canClick = false;}
       }
       else if(wasteController.wasteItems[i].wasteData.isClicked && wasteController.wasteItems[i].wasteData.scoreToGive > 0 && playerController.playerData.quota == 0 && DateTime.now().isAfter(playerController.playerData.dateTime.add(const Duration(seconds: 10)))){
         playerController.playerData.score += wasteController.wasteItems[i].wasteData.scoreToGive*25;
