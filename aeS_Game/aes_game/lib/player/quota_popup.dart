@@ -27,8 +27,17 @@ class QuotaPopup extends StatelessWidget {
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   color: const Color(0xFFFFE69C),
+                  boxShadow: [  BoxShadow(
+                              color: Colors.black.withOpacity(0.5),
+                              spreadRadius: 10,
+                              blurRadius: 7,
+                              offset: const Offset(0, 3), // changes position of shadow
+                            ),
+                          ],
                   borderRadius: BorderRadius.circular(10)
+                  
                 ),
+                
               ),
               SizedBox(
                 width: 1000,
