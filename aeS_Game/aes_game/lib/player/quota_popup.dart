@@ -1,7 +1,4 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'dart:math';
 import '../aes_game.dart';
 
 // ignore: must_be_immutable
@@ -9,11 +6,10 @@ class QuotaPopup extends StatelessWidget {
   static const String id = 'QuotaPopup';
   final AesGame gameRef;
 
-  QuotaPopup(Key key, {required this.gameRef}) : super(key: key);
+  const QuotaPopup(Key key, {required this.gameRef}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final Random random = Random();
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -63,13 +59,6 @@ class QuotaPopup extends StatelessWidget {
                     child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
-                        /*Card(
-                              margin: const EdgeInsets.all(10),
-                              child: ListTile(
-                                title: const Text("Did you know?"),
-                                subtitle: Text(individualTrivia),
-                              ),
-                      ),*/
                       Padding(
                         padding: EdgeInsets.only(bottom: 25),
                           child: Text(

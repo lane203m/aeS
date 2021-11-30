@@ -5,5 +5,4 @@ class PlayerData{
   String ipAddress;
 
   PlayerData(this.score, this.quota, this.dateTime, this.ipAddress);
-
 }

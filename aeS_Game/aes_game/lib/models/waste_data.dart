@@ -11,5 +11,4 @@ class WasteData{
   bool canClick = true;
 
   WasteData(this.isClicked, this.canClick, this.wasteId, {required Sprite wasteSpriteValue}) : wasteSprite = wasteSpriteValue;
-
 }

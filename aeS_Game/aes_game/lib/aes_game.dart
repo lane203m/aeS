@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:aes_game/parallax_component.dart';
 import 'package:aes_game/player/player_controller.dart';
 import 'package:aes_game/player/quota_popup.dart';
@@ -26,7 +24,7 @@ class AesGame extends FlameGame with HasTappableComponents, FPSCounter {
   late PlayerController playerController;
 
   void initialize() async {
-    
+ 
   }
 
   @override
@@ -53,8 +51,8 @@ class AesGame extends FlameGame with HasTappableComponents, FPSCounter {
     await super.onLoad();
     image = await Flame.images.load('../../../sprites/recycle_item_sprites.png');
     wasteController = WasteController(image: image);
-    wasteController.generateWasteItems();
-    debugPrint('${wasteController.wasteItems.length}');
+    await wasteController.generateWasteItems();
+    //debugPrint('${wasteController.wasteItems.length}');
     await add(SeaParallaxComponent());
     playerController = PlayerController(size);
     add(wasteController);
@@ -120,6 +118,5 @@ class AesGame extends FlameGame with HasTappableComponents, FPSCounter {
       clickingAction == 0;
     }
   }
-
 }
 

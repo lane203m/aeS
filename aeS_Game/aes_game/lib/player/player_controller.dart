@@ -10,7 +10,7 @@ class PlayerController extends Component {
   Vector2 size;
   late TextComponent scoreOverlay;
   late TextComponent quotaOverlay;
-  //DateFormat dateFormat = 
+
   PlayerController(this.size)
   {
     initialize();
@@ -19,12 +19,6 @@ class PlayerController extends Component {
   initialize() async {
     playerData = getPlayerData();
   }
-
-  /*void getPlayerState(){
-    score = score;
-    quota = quota;
-    dateTime = dateTime;
-  }*/
 
   @override
   void render(Canvas canvas) {
@@ -80,7 +74,6 @@ class PlayerController extends Component {
       // does not get affected by camera's transformations.
       quotaOverlay.isHud = true;
       add(quotaOverlay);
-    
   }
   @override
   void update(double dt) {

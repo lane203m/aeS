@@ -8,23 +8,23 @@ import 'package:flame/sprite.dart';
 import 'package:flame/image_composition.dart';
 import 'dart:math' as math;
 import 'package:flame/input.dart';
-
+import 'package:aes_game/connections/http_delete.dart';
 
 class WasteItem extends SpriteComponent with Tappable {
   late WasteData wasteData;
   SpriteSheet spriteSheet;
   bool canClick = true;
 
-  WasteItem(this.spriteSheet,  bool isClicked, bool canClick, int spriteNumber, int wasteId, {required Vector2 position})
+  WasteItem(this.spriteSheet,  bool isClicked, bool canClick, int spriteNumber, int wasteId, {required int size, required Vector2 position})
       : super(
           position: position,
-          size: Vector2.all(48 + (64-48) * math.Random().nextDouble()),
+          size: Vector2.all(size as double),
         ){
     initialize(spriteNumber, isClicked, canClick, wasteId);
   }
 
   void initialize(int spriteNumber, bool isClicked, bool canClick, int wasteId) async{
-    var wasteSprite = spriteSheet.getSprite(0, math.Random().nextInt(16));
+    var wasteSprite = spriteSheet.getSprite(0, spriteNumber);
     wasteData = WasteData(isClicked, canClick, wasteId, wasteSpriteValue: wasteSprite);
     sprite = wasteData.wasteSprite;
   }
@@ -39,10 +39,10 @@ class WasteItem extends SpriteComponent with Tappable {
   // ignore: avoid_renaming_method_parameters
   bool onTapDown(_) {
     if(!wasteData.isClicked && canClick){
+      deleteWaste(wasteData.wasteId);
       triggerDespawn();
     }
     return false;
-    
   }
 
 

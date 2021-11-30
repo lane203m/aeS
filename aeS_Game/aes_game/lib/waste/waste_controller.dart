@@ -1,15 +1,18 @@
+// ignore_for_file: implementation_imports
+import 'package:aes_game/models/waste_response.dart';
 import 'package:aes_game/waste/waste.dart';
+import 'package:collection/src/iterable_extensions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/extensions.dart';
 import 'package:flame/game.dart';
 import 'package:flame/sprite.dart';
 import 'dart:math';
-
-import 'package:flutter/foundation.dart';
+import 'package:aes_game/connections/http_get.dart';
 
 class WasteController extends Component {
   List<WasteItem> wasteItems = [];
+  late DateTime updateTime; 
   Image image;
   Random random = Random();
   late SpriteSheet spriteSheet;
@@ -26,11 +29,12 @@ class WasteController extends Component {
       image: image,
       srcSize: Vector2(64, 64)
     );
+    updateTime = DateTime.now().toUtc();
   }
 
-  void generateWasteItems() async{
+  Future generateWasteItems() async{
 
-    wasteItems = getWasteItems();
+    wasteItems = await getWasteItems();
   }
 
   @override
@@ -38,42 +42,55 @@ class WasteController extends Component {
     await super.onLoad();
     wasteItems[0].sprite;
     for(int i = 0; i<wasteItems.length; i++){
-      debugPrint('${wasteItems[i].wasteData.wasteId}');
       add(wasteItems[i]);
-      debugPrint('${wasteItems[i].sprite?.image.toString()}');
-      debugPrint('${wasteItems[i].sprite?.src}');
-      debugPrint('${wasteItems[i].sprite?.src.toString()}');
     }
   }
   
+
+  static const double updateRate = 1;
+  double _timeSinceUpdate = 0;
   @override
   void update(double dt) {
     // ignore: todo
     // TODO: implement update
     super.update(dt);
-
-    List<int> removedItems = getRemovedItems();
-    for (var wasteElement in wasteItems) {
-      if(removedItems.contains(wasteElement.wasteData.wasteId)){
-        wasteElement.triggerDespawn();
-      }
+    if(_timeSinceUpdate < updateRate) {
+      _timeSinceUpdate += dt;
+      return;
     }
+    _timeSinceUpdate = 0;
 
-
+    handleRemovedItems();
   }
 
-  List<int> getRemovedItems(){
-    return [];
+  void handleRemovedItems() async{
+    List<WasteResponse> removedWasteData = await getDeleted(updateTime.subtract(const Duration(seconds: 10)));
+    WasteItem? toDelete;
+    while(removedWasteData.isNotEmpty){
+      WasteResponse wasteResponse = removedWasteData.removeLast();
+
+      toDelete = wasteItems.firstWhereOrNull((it) => it.wasteData.wasteId == wasteResponse.wasteID);
+      if(toDelete != null && !toDelete.wasteData.isClicked){
+        toDelete.wasteData.isClicked = true;
+        toDelete.wasteData.scoreToGive = 0;
+        toDelete.triggerDespawn();
+
+      }
+
+    }
+    updateTime = DateTime.now().toUtc();
   }
 
-  List<WasteItem> getWasteItems() {
+  Future getWasteItems() async{
+
+    List<WasteResponse> wasteData = await getAll();
     List<WasteItem> wasteItemResults = []; 
     
-    for (int i = 0; i < 1000; i++){
+    for (WasteResponse element in wasteData){
       random = Random();
-      wasteItemResults.add(WasteItem(spriteSheet, false, true, i, random.nextInt(16) , position: Vector2(1920*random.nextDouble(), 1080*random.nextDouble())));
+      wasteItemResults.add(WasteItem(spriteSheet, false, true, element.wasteType, element.wasteID , size: element.size, position: Vector2(element.xPos as double, element.yPos as double)));
     }
-    debugPrint('${wasteItemResults.first.sprite}');
+    //debugPrint('${wasteItemResults.first.sprite}');
     return wasteItemResults;
   }
 }

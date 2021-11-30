@@ -84,13 +84,6 @@ class TriviaPopup extends StatelessWidget {
                             child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                                /*Card(
-                                      margin: const EdgeInsets.all(10),
-                                      child: ListTile(
-                                        title: const Text("Did you know?"),
-                                        subtitle: Text(individualTrivia),
-                                      ),
-                              ),*/
                               const Padding(
                                 padding: EdgeInsets.only(bottom: 25),
                                   child: Text(
