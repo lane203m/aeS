@@ -10,8 +10,12 @@ aeS aims to be a new web/mobile platform seeking to provide daily interaction/le
 - [MVP1 Status Report](https://github.com/lane203m/aeS/blob/main/Documentation/Project%20Activity%20%233/P09%20-%20405%20-%20Project%20Status%20Report.docx.pdf)
 - [MVP2 Presentation](https://github.com/lane203m/aeS/blob/main/Documentation/Project%20Activity%20%234/MVP2.pdf)
 - [MVP2 Status Report](https://github.com/lane203m/aeS/blob/main/Documentation/Project%20Activity%20%234/P09%20-%20405%20-%20Project%20Status%20Report.docx.pdf)
-
+- [MVP3 Status Report](https://github.com/lane203m/aeS/blob/main/Documentation/Project%20Activity%20%235/P09%20-%20405%20-%20Project%20Status%20Report.docx.pdf)
+- [MVP3 Presentation](https://github.com/lane203m/aeS/blob/main/Documentation/Project%20Activity%20%235/MVP3.pdf)
+- [MVP3 Discussion](https://github.com/lane203m/aeS/blob/main/Documentation/Project%20Activity%20%235/Lecture%20Discussion.pdf)
 ## Vlogs
-### Project Vlog Intro Link
 
+### Project Commercial
+[![Project Commercial - Click to watch](https://i.ytimg.com/vi/kpQUZAwA_PU/hqdefault.jpg)](https://youtu.be/kpQUZAwA_PU)
+### Project Vlog Intro Link
 [![Project Vlog Intro Link - Click to watch](https://i.ytimg.com/vi/f12HEz066Ss/hqdefault.jpg)](https://youtu.be/f12HEz066Ss)
