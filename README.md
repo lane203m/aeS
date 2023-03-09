@@ -1,5 +1,5 @@
 # aeS
-Interactive game on sea life, preservation, and sustainability 
+Interactive game on sea life, preservation, and sustainability.
 
 ## The main vision, idea, area (etc.)
 
